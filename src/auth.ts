@@ -1,13 +1,35 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { authConfig } from "@/auth.config";
 import { prisma } from "@/lib/prisma";
 
+/** Em produção na Vercel, defina `AUTH_DEBUG=1` para logs detalhados do Auth.js (remova depois). */
+const authDebug =
+  process.env.AUTH_DEBUG === "true" ||
+  process.env.AUTH_DEBUG === "1" ||
+  process.env.NODE_ENV !== "production";
+
+/**
+ * Cookies seguros em HTTPS (Vercel) ou quando a URL pública já é https.
+ * Fora disso, deixamos indefinido para o Auth.js inferir (ex.: http://localhost).
+ */
+function secureCookiesFromEnv(): boolean | undefined {
+  if (process.env.VERCEL === "1") return true;
+  const publicUrl =
+    process.env.AUTH_URL?.trim() ||
+    process.env.NEXTAUTH_URL?.trim() ||
+    "";
+  if (publicUrl.startsWith("https://")) return true;
+  return undefined;
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  debug: authDebug,
+  useSecureCookies: secureCookiesFromEnv(),
   adapter: PrismaAdapter(prisma),
   providers: [
     ...authConfig.providers,

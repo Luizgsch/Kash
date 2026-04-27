@@ -6,7 +6,7 @@
  * default export — mesmo fluxo descrito em
  * https://authjs.dev/getting-started/migrating-to-v5
  *
- * Não importar `@/auth` aqui: lá entram Prisma, adapter e bcrypt (incompatíveis com
+ * Não importar `@/auth` aqui: lá entram Prisma, adapter e bcryptjs (incompatíveis com
  * Edge). Apenas `@/auth.config` (JWT + callbacks, sem Node-only).
  */
 import NextAuth from "next-auth";
