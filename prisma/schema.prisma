@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Organization {
+  id           String        @id @default(uuid())
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  users        User[]
+  wallets      Wallet[]
+}
+
+model Wallet {
+  id             String        @id @default(uuid())
+  name           String
+  organizationId String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  categories     Category[]
+  transactions   Transaction[]
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model Category {
+  id           String        @id @default(uuid())
+  name         String
+  walletId     String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  wallet       Wallet        @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@unique([walletId, name])
+  @@index([walletId])
+}
+
+model User {
+  id              String    @id @default(uuid())
+  name            String?
+  email           String?   @unique
+  password        String?
+  emailVerified   DateTime?
+  image           String?
+  role            String    @default("member")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  organizationId  String?
+  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  accounts        Account[]
+  sessions        Session[]
+  transactions    Transaction[]
+
+  @@index([organizationId])
+}
+
+model Transaction {
+  id             String          @id @default(uuid())
+  description    String?
+  amount         Int
+  type           TransactionType
+  userId         String
+  organizationId String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  categoryId     String
+  walletId       String
+  category       Category        @relation(fields: [categoryId], references: [id])
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet         Wallet          @relation(fields: [walletId], references: [id])
+
+  @@index([organizationId])
+  @@index([organizationId, createdAt])
+  @@index([userId])
+  @@index([type])
+  @@index([categoryId])
+  @@index([walletId])
+}
+
+enum TransactionType {
+  INFLOW
+  OUTFLOW
+}
