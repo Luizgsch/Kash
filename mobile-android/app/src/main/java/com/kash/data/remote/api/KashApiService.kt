@@ -28,6 +28,12 @@ interface KashApiService {
     @POST("mobile/transactions")
     suspend fun postTransaction(@Body dto: TransactionDto)
 
+    @PATCH("mobile/transactions/{id}")
+    suspend fun updateTransaction(@Path("id") id: String, @Body dto: TransactionDto): TransactionResponseDto
+
+    @DELETE("mobile/transactions/{id}")
+    suspend fun deleteTransaction(@Path("id") id: String)
+
     // Wallets / Spaces
     @GET("mobile/wallets")
     suspend fun getWallets(): List<WalletDto>
