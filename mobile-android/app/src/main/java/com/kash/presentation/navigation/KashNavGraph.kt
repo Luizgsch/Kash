@@ -32,8 +32,8 @@ import com.kash.presentation.theme.KashColors
 private data class NavItem(val screen: Screen, val label: String, val icon: ImageVector)
 
 private val navItems = listOf(
-    NavItem(Screen.Dashboard,      "Dashboard",   Icons.Outlined.Home),
-    NavItem(Screen.Transactions,   "Transações",  Icons.Outlined.AccountBalanceWallet),
+    NavItem(Screen.Dashboard,      "Home",        Icons.Outlined.Home),
+    NavItem(Screen.Transactions,   "Histórico",   Icons.Outlined.AccountBalanceWallet),
     NavItem(Screen.AddTransaction, "Adicionar",   Icons.Outlined.AddCircleOutline),
     NavItem(Screen.Spaces,         "Espaços",     Icons.Outlined.Layers),
     NavItem(Screen.Profile,        "Perfil",      Icons.Outlined.Person),
