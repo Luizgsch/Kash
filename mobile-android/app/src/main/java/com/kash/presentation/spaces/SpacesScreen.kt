@@ -241,7 +241,7 @@ private fun WalletCard(
                     } else {
                         categories.forEach { cat ->
                             Row(
-                                modifier          = Modifier.fillMaxWidth().padding(vertical = 4.dp, end = 8.dp),
+                                modifier          = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp, end = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(Icons.Outlined.Label, null, tint = KashColors.OnSurfaceFaint, modifier = Modifier.size(14.dp))
