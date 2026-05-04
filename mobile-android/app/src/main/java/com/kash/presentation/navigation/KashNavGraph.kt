@@ -98,7 +98,7 @@ private fun MainApp(onLogout: () -> Unit) {
                                 restoreState    = !isAdd
                             }
                         },
-                        modifier = Modifier.weight(1f).heightIn(min = 90.dp),
+                        modifier = Modifier.weight(1f).heightIn(min = 90.dp).widthIn(min = 85.dp),
                         icon = {
                             if (isAdd) {
                                 Icon(
