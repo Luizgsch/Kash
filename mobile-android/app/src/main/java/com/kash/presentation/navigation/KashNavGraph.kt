@@ -98,6 +98,7 @@ private fun MainApp(onLogout: () -> Unit) {
                                 restoreState    = !isAdd
                             }
                         },
+                        modifier = Modifier.heightIn(min = 90.dp),
                         icon = {
                             if (isAdd) {
                                 Icon(
