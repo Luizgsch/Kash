@@ -8,11 +8,10 @@ import com.kash.di.RepositoryModule;
 import com.kash.presentation.AppViewModel_HiltModules;
 import com.kash.presentation.auth.LoginViewModel_HiltModules;
 import com.kash.presentation.dashboard.DashboardViewModel_HiltModules;
-import com.kash.presentation.history.HistoryViewModel_HiltModules;
-import com.kash.presentation.insights.InsightsViewModel_HiltModules;
-import com.kash.presentation.loss.LossViewModel_HiltModules;
-import com.kash.presentation.product.ProductViewModel_HiltModules;
-import com.kash.presentation.transaction.TransactionViewModel_HiltModules;
+import com.kash.presentation.profile.ProfileViewModel_HiltModules;
+import com.kash.presentation.spaces.SpacesViewModel_HiltModules;
+import com.kash.presentation.transaction.AddTransactionViewModel_HiltModules;
+import com.kash.presentation.transaction.TransactionsViewModel_HiltModules;
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
@@ -168,18 +167,17 @@ public final class KashApplication_HiltComponents {
 
   @Subcomponent(
       modules = {
+          AddTransactionViewModel_HiltModules.KeyModule.class,
           AppViewModel_HiltModules.KeyModule.class,
           DashboardViewModel_HiltModules.KeyModule.class,
           HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
           HiltWrapper_SavedStateHandleModule.class,
-          HistoryViewModel_HiltModules.KeyModule.class,
-          InsightsViewModel_HiltModules.KeyModule.class,
           ActivityCBuilderModule.class,
           ViewModelCBuilderModule.class,
           LoginViewModel_HiltModules.KeyModule.class,
-          LossViewModel_HiltModules.KeyModule.class,
-          ProductViewModel_HiltModules.KeyModule.class,
-          TransactionViewModel_HiltModules.KeyModule.class
+          ProfileViewModel_HiltModules.KeyModule.class,
+          SpacesViewModel_HiltModules.KeyModule.class,
+          TransactionsViewModel_HiltModules.KeyModule.class
       }
   )
   @ActivityRetainedScoped
@@ -215,15 +213,14 @@ public final class KashApplication_HiltComponents {
 
   @Subcomponent(
       modules = {
+          AddTransactionViewModel_HiltModules.BindsModule.class,
           AppViewModel_HiltModules.BindsModule.class,
           DashboardViewModel_HiltModules.BindsModule.class,
           HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
-          HistoryViewModel_HiltModules.BindsModule.class,
-          InsightsViewModel_HiltModules.BindsModule.class,
           LoginViewModel_HiltModules.BindsModule.class,
-          LossViewModel_HiltModules.BindsModule.class,
-          ProductViewModel_HiltModules.BindsModule.class,
-          TransactionViewModel_HiltModules.BindsModule.class
+          ProfileViewModel_HiltModules.BindsModule.class,
+          SpacesViewModel_HiltModules.BindsModule.class,
+          TransactionsViewModel_HiltModules.BindsModule.class
       }
   )
   @ViewModelScoped

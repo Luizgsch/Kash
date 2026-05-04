@@ -1,8 +1,6 @@
 package com.kash.presentation.dashboard;
 
-import com.kash.data.local.UserPreferences;
-import com.kash.domain.repository.DailyProfitRepository;
-import com.kash.domain.repository.ProductRepository;
+import com.kash.data.remote.api.KashApiService;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;
@@ -26,32 +24,22 @@ import javax.inject.Provider;
     "deprecation"
 })
 public final class DashboardViewModel_Factory implements Factory<DashboardViewModel> {
-  private final Provider<DailyProfitRepository> profitRepoProvider;
+  private final Provider<KashApiService> apiProvider;
 
-  private final Provider<ProductRepository> productRepoProvider;
-
-  private final Provider<UserPreferences> prefsProvider;
-
-  public DashboardViewModel_Factory(Provider<DailyProfitRepository> profitRepoProvider,
-      Provider<ProductRepository> productRepoProvider, Provider<UserPreferences> prefsProvider) {
-    this.profitRepoProvider = profitRepoProvider;
-    this.productRepoProvider = productRepoProvider;
-    this.prefsProvider = prefsProvider;
+  public DashboardViewModel_Factory(Provider<KashApiService> apiProvider) {
+    this.apiProvider = apiProvider;
   }
 
   @Override
   public DashboardViewModel get() {
-    return newInstance(profitRepoProvider.get(), productRepoProvider.get(), prefsProvider.get());
+    return newInstance(apiProvider.get());
   }
 
-  public static DashboardViewModel_Factory create(
-      Provider<DailyProfitRepository> profitRepoProvider,
-      Provider<ProductRepository> productRepoProvider, Provider<UserPreferences> prefsProvider) {
-    return new DashboardViewModel_Factory(profitRepoProvider, productRepoProvider, prefsProvider);
+  public static DashboardViewModel_Factory create(Provider<KashApiService> apiProvider) {
+    return new DashboardViewModel_Factory(apiProvider);
   }
 
-  public static DashboardViewModel newInstance(DailyProfitRepository profitRepo,
-      ProductRepository productRepo, UserPreferences prefs) {
-    return new DashboardViewModel(profitRepo, productRepo, prefs);
+  public static DashboardViewModel newInstance(KashApiService api) {
+    return new DashboardViewModel(api);
   }
 }

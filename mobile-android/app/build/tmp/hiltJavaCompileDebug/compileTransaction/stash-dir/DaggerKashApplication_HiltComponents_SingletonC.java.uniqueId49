@@ -14,38 +14,18 @@ import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
 import com.kash.data.local.KashDatabase;
 import com.kash.data.local.UserPreferences;
-import com.kash.data.local.dao.InsightsDao;
-import com.kash.data.local.dao.LossDao;
-import com.kash.data.local.dao.ProductDao;
-import com.kash.data.local.dao.ProductTransactionDao;
-import com.kash.data.local.dao.SaleDao;
 import com.kash.data.local.dao.TransactionDao;
 import com.kash.data.remote.api.AuthInterceptor;
 import com.kash.data.remote.api.KashApiService;
 import com.kash.data.repository.AuthRepositoryImpl;
-import com.kash.data.repository.DailyProfitRepositoryImpl;
-import com.kash.data.repository.InsightsRepositoryImpl;
-import com.kash.data.repository.ProductRepositoryImpl;
-import com.kash.data.repository.TransactionRepositoryImpl;
 import com.kash.data.sync.SyncWorker;
 import com.kash.data.sync.SyncWorker_AssistedFactory;
 import com.kash.di.DatabaseModule_ProvideDatabaseFactory;
-import com.kash.di.DatabaseModule_ProvideInsightsDaoFactory;
-import com.kash.di.DatabaseModule_ProvideLossDaoFactory;
-import com.kash.di.DatabaseModule_ProvideProductDaoFactory;
-import com.kash.di.DatabaseModule_ProvideProductTransactionDaoFactory;
-import com.kash.di.DatabaseModule_ProvideSaleDaoFactory;
 import com.kash.di.DatabaseModule_ProvideTransactionDaoFactory;
 import com.kash.di.NetworkModule_ProvideApiServiceFactory;
 import com.kash.di.NetworkModule_ProvideOkHttpFactory;
 import com.kash.di.NetworkModule_ProvideRetrofitFactory;
 import com.kash.domain.repository.AuthRepository;
-import com.kash.domain.repository.DailyProfitRepository;
-import com.kash.domain.repository.InsightsRepository;
-import com.kash.domain.repository.ProductRepository;
-import com.kash.domain.repository.TransactionRepository;
-import com.kash.domain.usecase.AddSaleUseCase;
-import com.kash.domain.usecase.GetProfitabilityInsightsUseCase;
 import com.kash.domain.usecase.LoginUseCase;
 import com.kash.presentation.AppViewModel;
 import com.kash.presentation.AppViewModel_HiltModules;
@@ -53,16 +33,14 @@ import com.kash.presentation.auth.LoginViewModel;
 import com.kash.presentation.auth.LoginViewModel_HiltModules;
 import com.kash.presentation.dashboard.DashboardViewModel;
 import com.kash.presentation.dashboard.DashboardViewModel_HiltModules;
-import com.kash.presentation.history.HistoryViewModel;
-import com.kash.presentation.history.HistoryViewModel_HiltModules;
-import com.kash.presentation.insights.InsightsViewModel;
-import com.kash.presentation.insights.InsightsViewModel_HiltModules;
-import com.kash.presentation.loss.LossViewModel;
-import com.kash.presentation.loss.LossViewModel_HiltModules;
-import com.kash.presentation.product.ProductViewModel;
-import com.kash.presentation.product.ProductViewModel_HiltModules;
-import com.kash.presentation.transaction.TransactionViewModel;
-import com.kash.presentation.transaction.TransactionViewModel_HiltModules;
+import com.kash.presentation.profile.ProfileViewModel;
+import com.kash.presentation.profile.ProfileViewModel_HiltModules;
+import com.kash.presentation.spaces.SpacesViewModel;
+import com.kash.presentation.spaces.SpacesViewModel_HiltModules;
+import com.kash.presentation.transaction.AddTransactionViewModel;
+import com.kash.presentation.transaction.AddTransactionViewModel_HiltModules;
+import com.kash.presentation.transaction.TransactionsViewModel;
+import com.kash.presentation.transaction.TransactionsViewModel_HiltModules;
 import dagger.hilt.android.ActivityRetainedLifecycle;
 import dagger.hilt.android.ViewModelLifecycle;
 import dagger.hilt.android.internal.builders.ActivityComponentBuilder;
@@ -427,7 +405,7 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     @Override
     public Map<Class<?>, Boolean> getViewModelKeys() {
-      return LazyClassKeyMap.<Boolean>of(MapBuilder.<String, Boolean>newMapBuilder(8).put(LazyClassKeyProvider.com_kash_presentation_AppViewModel, AppViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_dashboard_DashboardViewModel, DashboardViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_history_HistoryViewModel, HistoryViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_insights_InsightsViewModel, InsightsViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_auth_LoginViewModel, LoginViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_loss_LossViewModel, LossViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_product_ProductViewModel, ProductViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_transaction_TransactionViewModel, TransactionViewModel_HiltModules.KeyModule.provide()).build());
+      return LazyClassKeyMap.<Boolean>of(MapBuilder.<String, Boolean>newMapBuilder(7).put(LazyClassKeyProvider.com_kash_presentation_transaction_AddTransactionViewModel, AddTransactionViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_AppViewModel, AppViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_dashboard_DashboardViewModel, DashboardViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_auth_LoginViewModel, LoginViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_profile_ProfileViewModel, ProfileViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_spaces_SpacesViewModel, SpacesViewModel_HiltModules.KeyModule.provide()).put(LazyClassKeyProvider.com_kash_presentation_transaction_TransactionsViewModel, TransactionsViewModel_HiltModules.KeyModule.provide()).build());
     }
 
     @Override
@@ -447,45 +425,40 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     @IdentifierNameString
     private static final class LazyClassKeyProvider {
-      static String com_kash_presentation_AppViewModel = "com.kash.presentation.AppViewModel";
+      static String com_kash_presentation_transaction_AddTransactionViewModel = "com.kash.presentation.transaction.AddTransactionViewModel";
+
+      static String com_kash_presentation_profile_ProfileViewModel = "com.kash.presentation.profile.ProfileViewModel";
 
       static String com_kash_presentation_dashboard_DashboardViewModel = "com.kash.presentation.dashboard.DashboardViewModel";
 
-      static String com_kash_presentation_history_HistoryViewModel = "com.kash.presentation.history.HistoryViewModel";
-
-      static String com_kash_presentation_loss_LossViewModel = "com.kash.presentation.loss.LossViewModel";
-
       static String com_kash_presentation_auth_LoginViewModel = "com.kash.presentation.auth.LoginViewModel";
 
-      static String com_kash_presentation_product_ProductViewModel = "com.kash.presentation.product.ProductViewModel";
+      static String com_kash_presentation_transaction_TransactionsViewModel = "com.kash.presentation.transaction.TransactionsViewModel";
 
-      static String com_kash_presentation_insights_InsightsViewModel = "com.kash.presentation.insights.InsightsViewModel";
+      static String com_kash_presentation_AppViewModel = "com.kash.presentation.AppViewModel";
 
-      static String com_kash_presentation_transaction_TransactionViewModel = "com.kash.presentation.transaction.TransactionViewModel";
+      static String com_kash_presentation_spaces_SpacesViewModel = "com.kash.presentation.spaces.SpacesViewModel";
 
       @KeepFieldType
-      AppViewModel com_kash_presentation_AppViewModel2;
+      AddTransactionViewModel com_kash_presentation_transaction_AddTransactionViewModel2;
+
+      @KeepFieldType
+      ProfileViewModel com_kash_presentation_profile_ProfileViewModel2;
 
       @KeepFieldType
       DashboardViewModel com_kash_presentation_dashboard_DashboardViewModel2;
 
       @KeepFieldType
-      HistoryViewModel com_kash_presentation_history_HistoryViewModel2;
-
-      @KeepFieldType
-      LossViewModel com_kash_presentation_loss_LossViewModel2;
-
-      @KeepFieldType
       LoginViewModel com_kash_presentation_auth_LoginViewModel2;
 
       @KeepFieldType
-      ProductViewModel com_kash_presentation_product_ProductViewModel2;
+      TransactionsViewModel com_kash_presentation_transaction_TransactionsViewModel2;
 
       @KeepFieldType
-      InsightsViewModel com_kash_presentation_insights_InsightsViewModel2;
+      AppViewModel com_kash_presentation_AppViewModel2;
 
       @KeepFieldType
-      TransactionViewModel com_kash_presentation_transaction_TransactionViewModel2;
+      SpacesViewModel com_kash_presentation_spaces_SpacesViewModel2;
     }
   }
 
@@ -496,21 +469,19 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     private final ViewModelCImpl viewModelCImpl = this;
 
+    private Provider<AddTransactionViewModel> addTransactionViewModelProvider;
+
     private Provider<AppViewModel> appViewModelProvider;
 
     private Provider<DashboardViewModel> dashboardViewModelProvider;
 
-    private Provider<HistoryViewModel> historyViewModelProvider;
-
-    private Provider<InsightsViewModel> insightsViewModelProvider;
-
     private Provider<LoginViewModel> loginViewModelProvider;
 
-    private Provider<LossViewModel> lossViewModelProvider;
+    private Provider<ProfileViewModel> profileViewModelProvider;
 
-    private Provider<ProductViewModel> productViewModelProvider;
+    private Provider<SpacesViewModel> spacesViewModelProvider;
 
-    private Provider<TransactionViewModel> transactionViewModelProvider;
+    private Provider<TransactionsViewModel> transactionsViewModelProvider;
 
     private ViewModelCImpl(SingletonCImpl singletonCImpl,
         ActivityRetainedCImpl activityRetainedCImpl, SavedStateHandle savedStateHandleParam,
@@ -522,34 +493,25 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     }
 
-    private GetProfitabilityInsightsUseCase getProfitabilityInsightsUseCase() {
-      return new GetProfitabilityInsightsUseCase(singletonCImpl.bindInsightsRepoProvider.get());
-    }
-
     private LoginUseCase loginUseCase() {
       return new LoginUseCase(singletonCImpl.bindAuthRepoProvider.get());
-    }
-
-    private AddSaleUseCase addSaleUseCase() {
-      return new AddSaleUseCase(singletonCImpl.bindTransactionRepoProvider.get(), singletonCImpl.bindProductRepoProvider.get());
     }
 
     @SuppressWarnings("unchecked")
     private void initialize(final SavedStateHandle savedStateHandleParam,
         final ViewModelLifecycle viewModelLifecycleParam) {
-      this.appViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
-      this.dashboardViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
-      this.historyViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
-      this.insightsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
-      this.loginViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
-      this.lossViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
-      this.productViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
-      this.transactionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 7);
+      this.addTransactionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
+      this.appViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
+      this.dashboardViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
+      this.loginViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
+      this.profileViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
+      this.spacesViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
+      this.transactionsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
     }
 
     @Override
     public Map<Class<?>, javax.inject.Provider<ViewModel>> getHiltViewModelMap() {
-      return LazyClassKeyMap.<javax.inject.Provider<ViewModel>>of(MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(8).put(LazyClassKeyProvider.com_kash_presentation_AppViewModel, ((Provider) appViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_dashboard_DashboardViewModel, ((Provider) dashboardViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_history_HistoryViewModel, ((Provider) historyViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_insights_InsightsViewModel, ((Provider) insightsViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_auth_LoginViewModel, ((Provider) loginViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_loss_LossViewModel, ((Provider) lossViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_product_ProductViewModel, ((Provider) productViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_transaction_TransactionViewModel, ((Provider) transactionViewModelProvider)).build());
+      return LazyClassKeyMap.<javax.inject.Provider<ViewModel>>of(MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(7).put(LazyClassKeyProvider.com_kash_presentation_transaction_AddTransactionViewModel, ((Provider) addTransactionViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_AppViewModel, ((Provider) appViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_dashboard_DashboardViewModel, ((Provider) dashboardViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_auth_LoginViewModel, ((Provider) loginViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_profile_ProfileViewModel, ((Provider) profileViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_spaces_SpacesViewModel, ((Provider) spacesViewModelProvider)).put(LazyClassKeyProvider.com_kash_presentation_transaction_TransactionsViewModel, ((Provider) transactionsViewModelProvider)).build());
     }
 
     @Override
@@ -563,17 +525,15 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
       static String com_kash_presentation_AppViewModel = "com.kash.presentation.AppViewModel";
 
-      static String com_kash_presentation_loss_LossViewModel = "com.kash.presentation.loss.LossViewModel";
-
-      static String com_kash_presentation_insights_InsightsViewModel = "com.kash.presentation.insights.InsightsViewModel";
-
-      static String com_kash_presentation_history_HistoryViewModel = "com.kash.presentation.history.HistoryViewModel";
+      static String com_kash_presentation_transaction_TransactionsViewModel = "com.kash.presentation.transaction.TransactionsViewModel";
 
       static String com_kash_presentation_auth_LoginViewModel = "com.kash.presentation.auth.LoginViewModel";
 
-      static String com_kash_presentation_product_ProductViewModel = "com.kash.presentation.product.ProductViewModel";
+      static String com_kash_presentation_spaces_SpacesViewModel = "com.kash.presentation.spaces.SpacesViewModel";
 
-      static String com_kash_presentation_transaction_TransactionViewModel = "com.kash.presentation.transaction.TransactionViewModel";
+      static String com_kash_presentation_transaction_AddTransactionViewModel = "com.kash.presentation.transaction.AddTransactionViewModel";
+
+      static String com_kash_presentation_profile_ProfileViewModel = "com.kash.presentation.profile.ProfileViewModel";
 
       @KeepFieldType
       DashboardViewModel com_kash_presentation_dashboard_DashboardViewModel2;
@@ -582,22 +542,19 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
       AppViewModel com_kash_presentation_AppViewModel2;
 
       @KeepFieldType
-      LossViewModel com_kash_presentation_loss_LossViewModel2;
-
-      @KeepFieldType
-      InsightsViewModel com_kash_presentation_insights_InsightsViewModel2;
-
-      @KeepFieldType
-      HistoryViewModel com_kash_presentation_history_HistoryViewModel2;
+      TransactionsViewModel com_kash_presentation_transaction_TransactionsViewModel2;
 
       @KeepFieldType
       LoginViewModel com_kash_presentation_auth_LoginViewModel2;
 
       @KeepFieldType
-      ProductViewModel com_kash_presentation_product_ProductViewModel2;
+      SpacesViewModel com_kash_presentation_spaces_SpacesViewModel2;
 
       @KeepFieldType
-      TransactionViewModel com_kash_presentation_transaction_TransactionViewModel2;
+      AddTransactionViewModel com_kash_presentation_transaction_AddTransactionViewModel2;
+
+      @KeepFieldType
+      ProfileViewModel com_kash_presentation_profile_ProfileViewModel2;
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {
@@ -621,29 +578,26 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
       @Override
       public T get() {
         switch (id) {
-          case 0: // com.kash.presentation.AppViewModel 
+          case 0: // com.kash.presentation.transaction.AddTransactionViewModel 
+          return (T) new AddTransactionViewModel(singletonCImpl.provideApiServiceProvider.get(), singletonCImpl.userPreferencesProvider.get());
+
+          case 1: // com.kash.presentation.AppViewModel 
           return (T) new AppViewModel(singletonCImpl.bindAuthRepoProvider.get());
 
-          case 1: // com.kash.presentation.dashboard.DashboardViewModel 
-          return (T) new DashboardViewModel(singletonCImpl.bindDailyProfitRepoProvider.get(), singletonCImpl.bindProductRepoProvider.get(), singletonCImpl.userPreferencesProvider.get());
+          case 2: // com.kash.presentation.dashboard.DashboardViewModel 
+          return (T) new DashboardViewModel(singletonCImpl.provideApiServiceProvider.get());
 
-          case 2: // com.kash.presentation.history.HistoryViewModel 
-          return (T) new HistoryViewModel(singletonCImpl.bindDailyProfitRepoProvider.get(), singletonCImpl.userPreferencesProvider.get());
-
-          case 3: // com.kash.presentation.insights.InsightsViewModel 
-          return (T) new InsightsViewModel(viewModelCImpl.getProfitabilityInsightsUseCase(), singletonCImpl.userPreferencesProvider.get());
-
-          case 4: // com.kash.presentation.auth.LoginViewModel 
+          case 3: // com.kash.presentation.auth.LoginViewModel 
           return (T) new LoginViewModel(viewModelCImpl.loginUseCase());
 
-          case 5: // com.kash.presentation.loss.LossViewModel 
-          return (T) new LossViewModel(singletonCImpl.bindDailyProfitRepoProvider.get(), singletonCImpl.bindProductRepoProvider.get(), singletonCImpl.userPreferencesProvider.get());
+          case 4: // com.kash.presentation.profile.ProfileViewModel 
+          return (T) new ProfileViewModel(singletonCImpl.provideApiServiceProvider.get());
 
-          case 6: // com.kash.presentation.product.ProductViewModel 
-          return (T) new ProductViewModel(singletonCImpl.bindProductRepoProvider.get(), singletonCImpl.userPreferencesProvider.get());
+          case 5: // com.kash.presentation.spaces.SpacesViewModel 
+          return (T) new SpacesViewModel(singletonCImpl.provideApiServiceProvider.get());
 
-          case 7: // com.kash.presentation.transaction.TransactionViewModel 
-          return (T) new TransactionViewModel(singletonCImpl.bindProductRepoProvider.get(), singletonCImpl.bindDailyProfitRepoProvider.get(), viewModelCImpl.addSaleUseCase(), singletonCImpl.userPreferencesProvider.get());
+          case 6: // com.kash.presentation.transaction.TransactionsViewModel 
+          return (T) new TransactionsViewModel(singletonCImpl.provideApiServiceProvider.get());
 
           default: throw new AssertionError(id);
         }
@@ -741,22 +695,6 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     private Provider<AuthRepository> bindAuthRepoProvider;
 
-    private Provider<DailyProfitRepositoryImpl> dailyProfitRepositoryImplProvider;
-
-    private Provider<DailyProfitRepository> bindDailyProfitRepoProvider;
-
-    private Provider<ProductRepositoryImpl> productRepositoryImplProvider;
-
-    private Provider<ProductRepository> bindProductRepoProvider;
-
-    private Provider<InsightsRepositoryImpl> insightsRepositoryImplProvider;
-
-    private Provider<InsightsRepository> bindInsightsRepoProvider;
-
-    private Provider<TransactionRepositoryImpl> transactionRepositoryImplProvider;
-
-    private Provider<TransactionRepository> bindTransactionRepoProvider;
-
     private SingletonCImpl(ApplicationContextModule applicationContextModuleParam) {
       this.applicationContextModule = applicationContextModuleParam;
       initialize(applicationContextModuleParam);
@@ -765,18 +703,6 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     private TransactionDao transactionDao() {
       return DatabaseModule_ProvideTransactionDaoFactory.provideTransactionDao(provideDatabaseProvider.get());
-    }
-
-    private ProductDao productDao() {
-      return DatabaseModule_ProvideProductDaoFactory.provideProductDao(provideDatabaseProvider.get());
-    }
-
-    private SaleDao saleDao() {
-      return DatabaseModule_ProvideSaleDaoFactory.provideSaleDao(provideDatabaseProvider.get());
-    }
-
-    private LossDao lossDao() {
-      return DatabaseModule_ProvideLossDaoFactory.provideLossDao(provideDatabaseProvider.get());
     }
 
     private AuthInterceptor authInterceptor() {
@@ -792,14 +718,6 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
       return WorkerFactoryModule_ProvideFactoryFactory.provideFactory(mapOfStringAndProviderOfWorkerAssistedFactoryOf());
     }
 
-    private ProductTransactionDao productTransactionDao() {
-      return DatabaseModule_ProvideProductTransactionDaoFactory.provideProductTransactionDao(provideDatabaseProvider.get());
-    }
-
-    private InsightsDao insightsDao() {
-      return DatabaseModule_ProvideInsightsDaoFactory.provideInsightsDao(provideDatabaseProvider.get());
-    }
-
     @SuppressWarnings("unchecked")
     private void initialize(final ApplicationContextModule applicationContextModuleParam) {
       this.provideDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<KashDatabase>(singletonCImpl, 1));
@@ -810,14 +728,6 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
       this.syncWorker_AssistedFactoryProvider = SingleCheck.provider(new SwitchingProvider<SyncWorker_AssistedFactory>(singletonCImpl, 0));
       this.authRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 6);
       this.bindAuthRepoProvider = DoubleCheck.provider((Provider) authRepositoryImplProvider);
-      this.dailyProfitRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 7);
-      this.bindDailyProfitRepoProvider = DoubleCheck.provider((Provider) dailyProfitRepositoryImplProvider);
-      this.productRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 8);
-      this.bindProductRepoProvider = DoubleCheck.provider((Provider) productRepositoryImplProvider);
-      this.insightsRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 9);
-      this.bindInsightsRepoProvider = DoubleCheck.provider((Provider) insightsRepositoryImplProvider);
-      this.transactionRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 10);
-      this.bindTransactionRepoProvider = DoubleCheck.provider((Provider) transactionRepositoryImplProvider);
     }
 
     @Override
@@ -863,7 +773,7 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
           return (T) new SyncWorker_AssistedFactory() {
             @Override
             public SyncWorker create(Context ctx, WorkerParameters params) {
-              return new SyncWorker(ctx, params, singletonCImpl.transactionDao(), singletonCImpl.productDao(), singletonCImpl.saleDao(), singletonCImpl.lossDao(), singletonCImpl.provideApiServiceProvider.get());
+              return new SyncWorker(ctx, params, singletonCImpl.transactionDao(), singletonCImpl.provideApiServiceProvider.get());
             }
           };
 
@@ -884,18 +794,6 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
           case 6: // com.kash.data.repository.AuthRepositoryImpl 
           return (T) new AuthRepositoryImpl(singletonCImpl.provideApiServiceProvider.get(), singletonCImpl.userPreferencesProvider.get());
-
-          case 7: // com.kash.data.repository.DailyProfitRepositoryImpl 
-          return (T) new DailyProfitRepositoryImpl(singletonCImpl.productTransactionDao());
-
-          case 8: // com.kash.data.repository.ProductRepositoryImpl 
-          return (T) new ProductRepositoryImpl(singletonCImpl.productDao(), singletonCImpl.saleDao(), singletonCImpl.lossDao());
-
-          case 9: // com.kash.data.repository.InsightsRepositoryImpl 
-          return (T) new InsightsRepositoryImpl(singletonCImpl.insightsDao());
-
-          case 10: // com.kash.data.repository.TransactionRepositoryImpl 
-          return (T) new TransactionRepositoryImpl(singletonCImpl.transactionDao());
 
           default: throw new AssertionError(id);
         }

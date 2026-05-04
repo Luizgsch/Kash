@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -181,7 +182,7 @@ private fun TransactionRow(tx: TransactionResponseDto) {
     val dateStr  = remember(tx.createdAt) { dateFmt.format(Date(tx.createdAt)) }
 
     Row(
-        modifier              = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier              = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment     = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -201,12 +202,15 @@ private fun TransactionRow(tx: TransactionResponseDto) {
                     text     = (tx.description ?: "").ifBlank { tx.categoryName },
                     style    = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                     color    = KashColors.OnSurface,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text  = "${tx.categoryName} · $dateStr",
                     style = MaterialTheme.typography.bodySmall,
-                    color = KashColors.OnSurfaceMuted
+                    color = KashColors.OnSurfaceMuted,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

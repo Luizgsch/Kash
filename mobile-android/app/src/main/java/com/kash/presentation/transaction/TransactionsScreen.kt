@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -128,7 +129,7 @@ private fun TxRow(tx: TransactionResponseDto) {
     val dateStr  = remember(tx.createdAt) { dateFmt.format(Date(tx.createdAt)) }
 
     Row(
-        modifier              = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier              = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment     = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -177,7 +178,9 @@ private fun CategoryBadge(name: String) {
             text     = name,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
             style    = MaterialTheme.typography.labelSmall,
-            color    = KashColors.OnSurfaceMuted
+            color    = KashColors.OnSurfaceMuted,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -194,7 +197,9 @@ private fun TypeBadge(isInflow: Boolean) {
             text     = label,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
             style    = MaterialTheme.typography.labelSmall,
-            color    = color
+            color    = color,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
