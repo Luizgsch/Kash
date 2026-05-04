@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -151,10 +150,10 @@ private fun TxRow(tx: TransactionResponseDto) {
                     color    = KashColors.OnSurface,
                     maxLines = 1
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     CategoryBadge(tx.categoryName)
                     TypeBadge(isInflow)
-                    Text(dateStr, style = MaterialTheme.typography.bodySmall, color = KashColors.OnSurfaceFaint)
+                    Text(dateStr, style = MaterialTheme.typography.labelSmall, color = KashColors.OnSurfaceFaint, maxLines = 1)
                 }
             }
         }
@@ -176,11 +175,10 @@ private fun CategoryBadge(name: String) {
     ) {
         Text(
             text     = name,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
             style    = MaterialTheme.typography.labelSmall,
             color    = KashColors.OnSurfaceMuted,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            maxLines = 1
         )
     }
 }
@@ -195,11 +193,10 @@ private fun TypeBadge(isInflow: Boolean) {
     ) {
         Text(
             text     = label,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
             style    = MaterialTheme.typography.labelSmall,
             color    = color,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            maxLines = 1
         )
     }
 }

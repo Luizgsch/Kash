@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -200,17 +199,15 @@ private fun TransactionRow(tx: TransactionResponseDto) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text     = (tx.description ?: "").ifBlank { tx.categoryName },
-                    style    = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                    style    = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
                     color    = KashColors.OnSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = 1
                 )
                 Text(
                     text  = "${tx.categoryName} · $dateStr",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelSmall,
                     color = KashColors.OnSurfaceMuted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = 1
                 )
             }
         }
