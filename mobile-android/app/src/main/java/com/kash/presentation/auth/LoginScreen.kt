@@ -83,12 +83,12 @@ fun LoginScreen(
         ) {
             // Logo
             Text(
-                text  = "Kash",
-                style = MaterialTheme.typography.displayLarge,
+                text  = "Entrar no Kash",
+                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
                 color = KashColors.OnSurface
             )
             Text(
-                text  = "Gestão financeira inteligente",
+                text  = "Google, e-mail e senha",
                 style = MaterialTheme.typography.bodyMedium,
                 color = KashColors.OnSurfaceMuted
             )

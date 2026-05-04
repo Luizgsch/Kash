@@ -1,10 +1,9 @@
 package com.kash.presentation.navigation
 
 sealed class Screen(val route: String) {
-    data object Dashboard   : Screen("dashboard")
-    data object Insights    : Screen("insights")
-    data object Products    : Screen("products")
-    data object Transactions: Screen("transactions")
-    data object Loss        : Screen("loss")
-    data object History     : Screen("history")
+    data object Dashboard      : Screen("dashboard")
+    data object Transactions   : Screen("transactions")
+    data object Spaces         : Screen("spaces")
+    data object AddTransaction : Screen("add_transaction")
+    data object Profile        : Screen("profile")
 }

@@ -23,21 +23,20 @@ import com.kash.presentation.AppViewModel
 import com.kash.presentation.auth.LoginScreen
 import com.kash.presentation.auth.SignupScreen
 import com.kash.presentation.dashboard.DashboardScreen
-import com.kash.presentation.history.HistoryScreen
-import com.kash.presentation.insights.InsightsScreen
-import com.kash.presentation.loss.LossScreen
-import com.kash.presentation.product.ProductScreen
+import com.kash.presentation.profile.ProfileScreen
+import com.kash.presentation.spaces.SpacesScreen
+import com.kash.presentation.transaction.AddTransactionScreen
+import com.kash.presentation.transaction.TransactionsScreen
 import com.kash.presentation.theme.KashColors
-import com.kash.presentation.transaction.TransactionScreen
 
 private data class NavItem(val screen: Screen, val label: String, val icon: ImageVector)
 
 private val navItems = listOf(
-    NavItem(Screen.Dashboard,    "Início",   Icons.Outlined.Home),
-    NavItem(Screen.Products,     "Produtos", Icons.Outlined.Inventory),
-    NavItem(Screen.Transactions, "Caixa",    Icons.Outlined.Receipt),
-    NavItem(Screen.Insights,     "Insights", Icons.Outlined.BarChart),
-    NavItem(Screen.Loss,         "Perdas",   Icons.Outlined.DeleteOutline),
+    NavItem(Screen.Dashboard,      "Dashboard",   Icons.Outlined.Home),
+    NavItem(Screen.Transactions,   "Transações",  Icons.Outlined.AccountBalanceWallet),
+    NavItem(Screen.AddTransaction, "Adicionar",   Icons.Outlined.AddCircleOutline),
+    NavItem(Screen.Spaces,         "Espaços",     Icons.Outlined.Layers),
+    NavItem(Screen.Profile,        "Perfil",      Icons.Outlined.Person),
 )
 
 @Composable
@@ -56,13 +55,11 @@ private fun AuthNavHost() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "login") {
         composable("login") {
-            LoginScreen(
-                onNavigateToSignup = { navController.navigate("signup") }
-            )
+            LoginScreen(onNavigateToSignup = { navController.navigate("signup") })
         }
         composable("signup") {
             SignupScreen(
-                onSignupSuccess = { navController.popBackStack() },
+                onSignupSuccess   = { navController.popBackStack() },
                 onNavigateToLogin = { navController.popBackStack() }
             )
         }
@@ -72,10 +69,8 @@ private fun AuthNavHost() {
 @Composable
 private fun SplashScreen() {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(KashColors.Background),
-        contentAlignment = Alignment.Center
+        modifier          = Modifier.fillMaxSize().background(KashColors.Background),
+        contentAlignment  = Alignment.Center
     ) {
         Text("Kash", style = MaterialTheme.typography.displayLarge, color = KashColors.Accent)
     }
@@ -90,32 +85,40 @@ private fun MainApp(onLogout: () -> Unit) {
     Scaffold(
         containerColor = KashColors.Background,
         bottomBar = {
-            // Hide bottom bar on History screen
-            val onHistory = currentDest?.route == Screen.History.route
-            if (!onHistory) {
-                NavigationBar(containerColor = KashColors.Surface, tonalElevation = 0.dp) {
-                    navItems.forEach { item ->
-                        val selected = currentDest?.hierarchy?.any { it.route == item.screen.route } == true
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick  = {
-                                navController.navigate(item.screen.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState    = true
-                                }
-                            },
-                            icon   = { Icon(item.icon, contentDescription = item.label) },
-                            label  = { Text(item.label, style = MaterialTheme.typography.labelMedium) },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor   = KashColors.Accent,
-                                selectedTextColor   = KashColors.Accent,
-                                unselectedIconColor = KashColors.OnSurfaceFaint,
-                                unselectedTextColor = KashColors.OnSurfaceFaint,
-                                indicatorColor      = KashColors.SurfaceVariant
-                            )
+            NavigationBar(containerColor = KashColors.Surface, tonalElevation = 0.dp) {
+                navItems.forEach { item ->
+                    val isAdd    = item.screen == Screen.AddTransaction
+                    val selected = currentDest?.hierarchy?.any { it.route == item.screen.route } == true
+                    NavigationBarItem(
+                        selected = selected,
+                        onClick  = {
+                            navController.navigate(item.screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                launchSingleTop = true
+                                restoreState    = !isAdd
+                            }
+                        },
+                        icon = {
+                            if (isAdd) {
+                                Icon(
+                                    item.icon,
+                                    contentDescription = item.label,
+                                    modifier = Modifier.size(28.dp),
+                                    tint = KashColors.Accent
+                                )
+                            } else {
+                                Icon(item.icon, contentDescription = item.label)
+                            }
+                        },
+                        label  = { Text(item.label, style = MaterialTheme.typography.labelMedium) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor   = KashColors.Accent,
+                            selectedTextColor   = KashColors.Accent,
+                            unselectedIconColor = KashColors.OnSurfaceFaint,
+                            unselectedTextColor = KashColors.OnSurfaceFaint,
+                            indicatorColor      = KashColors.SurfaceVariant
                         )
-                    }
+                    )
                 }
             }
         }
@@ -126,17 +129,19 @@ private fun MainApp(onLogout: () -> Unit) {
             modifier         = Modifier.padding(padding)
         ) {
             composable(Screen.Dashboard.route) {
-                DashboardScreen(
-                    onNavigateToHistory = { navController.navigate(Screen.History.route) },
-                    onLogout            = onLogout
-                )
+                DashboardScreen(onLogout = onLogout)
             }
-            composable(Screen.Products.route)     { ProductScreen() }
-            composable(Screen.Transactions.route) { TransactionScreen() }
-            composable(Screen.Insights.route)     { InsightsScreen() }
-            composable(Screen.Loss.route)         { LossScreen() }
-            composable(Screen.History.route) {
-                HistoryScreen(onBack = { navController.popBackStack() })
+            composable(Screen.Transactions.route) {
+                TransactionsScreen()
+            }
+            composable(Screen.AddTransaction.route) {
+                AddTransactionScreen(onDone = { navController.popBackStack() })
+            }
+            composable(Screen.Spaces.route) {
+                SpacesScreen()
+            }
+            composable(Screen.Profile.route) {
+                ProfileScreen(onLogout = onLogout)
             }
         }
     }

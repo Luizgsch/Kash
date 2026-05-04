@@ -48,12 +48,12 @@ fun SignupScreen(
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Text(
-                text  = "Criar Conta",
-                style = MaterialTheme.typography.displayMedium,
+                text  = "Criar conta",
+                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
                 color = KashColors.OnSurface
             )
             Text(
-                text  = "Cadastre-se para começar",
+                text  = "Preencha os dados para começar",
                 style = MaterialTheme.typography.bodyMedium,
                 color = KashColors.OnSurfaceMuted
             )
