@@ -1,39 +1,66 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { Box, Container, Typography, Alert } from "@mui/material";
 import { LoginForm } from "@/app/login/LoginForm";
 
 type LoginPageProps = {
   searchParams?: { registered?: string };
 };
 
-/** Página de login canônica (`pages.signIn` do NextAuth → `/login`). */
 export default function LoginPage({ searchParams }: LoginPageProps) {
   const canEmailLogin = Boolean(process.env.RESEND_API_KEY?.trim());
   const justRegistered = searchParams?.registered === "1";
 
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center gap-8 px-4">
-      <div className="text-center space-y-1">
-        <h1 className="text-2xl font-bold text-slate-100">Entrar no Kash</h1>
-        <p className="text-slate-400 text-sm">
-          Google, e-mail e senha, ou link no e-mail (se configurado).
-        </p>
-        {justRegistered ? (
-          <p className="text-emerald-400 text-sm max-w-sm mx-auto pt-2">
-            Conta criada. Entre com seu e-mail e senha.
-          </p>
-        ) : null}
-        {!canEmailLogin ? (
-          <p className="text-slate-500 text-xs max-w-sm mx-auto">
-            Entrada por e-mail: defina <code className="text-slate-400">RESEND_API_KEY</code> (e
-            opcionalmente <code className="text-slate-400">EMAIL_FROM</code>).
-          </p>
-        ) : null}
-      </div>
-      <LoginForm canEmailLogin={canEmailLogin} />
-      <Link href="/" className="text-sm text-emerald-500 hover:text-emerald-400">
-        ← Voltar ao início
-      </Link>
-    </div>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          minHeight: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 4,
+          py: 4,
+        }}
+      >
+        <Box sx={{ textAlign: "center", width: "100%" }}>
+          <Typography variant="h4" component="h1" sx={{ mb: 1 }}>
+            Entrar no Kash
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary", mb: justRegistered || !canEmailLogin ? 2 : 0 }}>
+            Google, e-mail e senha, ou link no e-mail (se configurado).
+          </Typography>
+
+          {justRegistered && (
+            <Alert severity="success" sx={{ mt: 2 }}>
+              Conta criada. Entre com seu e-mail e senha.
+            </Alert>
+          )}
+
+          {!canEmailLogin && (
+            <Alert severity="info" sx={{ mt: 2 }}>
+              Entrada por e-mail: defina <code>RESEND_API_KEY</code> (e opcionalmente{" "}
+              <code>EMAIL_FROM</code>).
+            </Alert>
+          )}
+        </Box>
+
+        <LoginForm canEmailLogin={canEmailLogin} />
+
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "primary.main",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
+            ← Voltar ao início
+          </Typography>
+        </Link>
+      </Box>
+    </Container>
   );
 }
