@@ -12,7 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface KashApiService {
-    @POST("mobile/auth/login")     suspend fun login(@Body req: LoginRequest): LoginResponse
+    @POST("mobile/auth")           suspend fun login(@Body req: LoginRequest): LoginResponse
     @POST("mobile/auth/register")  suspend fun register(@Body req: RegisterRequest): LoginResponse
     @POST("mobile/auth/google")    suspend fun loginWithGoogle(@Body req: GoogleLoginRequest): LoginResponse
     @POST("mobile/transactions") suspend fun postTransaction(@Body dto: TransactionDto)

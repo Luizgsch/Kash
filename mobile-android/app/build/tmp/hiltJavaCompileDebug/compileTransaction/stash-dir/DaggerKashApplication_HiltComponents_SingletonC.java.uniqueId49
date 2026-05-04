@@ -447,42 +447,42 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     @IdentifierNameString
     private static final class LazyClassKeyProvider {
-      static String com_kash_presentation_dashboard_DashboardViewModel = "com.kash.presentation.dashboard.DashboardViewModel";
-
-      static String com_kash_presentation_auth_LoginViewModel = "com.kash.presentation.auth.LoginViewModel";
-
       static String com_kash_presentation_AppViewModel = "com.kash.presentation.AppViewModel";
 
-      static String com_kash_presentation_insights_InsightsViewModel = "com.kash.presentation.insights.InsightsViewModel";
-
-      static String com_kash_presentation_product_ProductViewModel = "com.kash.presentation.product.ProductViewModel";
+      static String com_kash_presentation_dashboard_DashboardViewModel = "com.kash.presentation.dashboard.DashboardViewModel";
 
       static String com_kash_presentation_history_HistoryViewModel = "com.kash.presentation.history.HistoryViewModel";
 
       static String com_kash_presentation_loss_LossViewModel = "com.kash.presentation.loss.LossViewModel";
 
+      static String com_kash_presentation_auth_LoginViewModel = "com.kash.presentation.auth.LoginViewModel";
+
+      static String com_kash_presentation_product_ProductViewModel = "com.kash.presentation.product.ProductViewModel";
+
+      static String com_kash_presentation_insights_InsightsViewModel = "com.kash.presentation.insights.InsightsViewModel";
+
       static String com_kash_presentation_transaction_TransactionViewModel = "com.kash.presentation.transaction.TransactionViewModel";
-
-      @KeepFieldType
-      DashboardViewModel com_kash_presentation_dashboard_DashboardViewModel2;
-
-      @KeepFieldType
-      LoginViewModel com_kash_presentation_auth_LoginViewModel2;
 
       @KeepFieldType
       AppViewModel com_kash_presentation_AppViewModel2;
 
       @KeepFieldType
-      InsightsViewModel com_kash_presentation_insights_InsightsViewModel2;
-
-      @KeepFieldType
-      ProductViewModel com_kash_presentation_product_ProductViewModel2;
+      DashboardViewModel com_kash_presentation_dashboard_DashboardViewModel2;
 
       @KeepFieldType
       HistoryViewModel com_kash_presentation_history_HistoryViewModel2;
 
       @KeepFieldType
       LossViewModel com_kash_presentation_loss_LossViewModel2;
+
+      @KeepFieldType
+      LoginViewModel com_kash_presentation_auth_LoginViewModel2;
+
+      @KeepFieldType
+      ProductViewModel com_kash_presentation_product_ProductViewModel2;
+
+      @KeepFieldType
+      InsightsViewModel com_kash_presentation_insights_InsightsViewModel2;
 
       @KeepFieldType
       TransactionViewModel com_kash_presentation_transaction_TransactionViewModel2;
@@ -559,45 +559,45 @@ public final class DaggerKashApplication_HiltComponents_SingletonC {
 
     @IdentifierNameString
     private static final class LazyClassKeyProvider {
-      static String com_kash_presentation_history_HistoryViewModel = "com.kash.presentation.history.HistoryViewModel";
-
-      static String com_kash_presentation_loss_LossViewModel = "com.kash.presentation.loss.LossViewModel";
+      static String com_kash_presentation_dashboard_DashboardViewModel = "com.kash.presentation.dashboard.DashboardViewModel";
 
       static String com_kash_presentation_AppViewModel = "com.kash.presentation.AppViewModel";
 
-      static String com_kash_presentation_transaction_TransactionViewModel = "com.kash.presentation.transaction.TransactionViewModel";
-
-      static String com_kash_presentation_product_ProductViewModel = "com.kash.presentation.product.ProductViewModel";
-
-      static String com_kash_presentation_dashboard_DashboardViewModel = "com.kash.presentation.dashboard.DashboardViewModel";
-
-      static String com_kash_presentation_auth_LoginViewModel = "com.kash.presentation.auth.LoginViewModel";
+      static String com_kash_presentation_loss_LossViewModel = "com.kash.presentation.loss.LossViewModel";
 
       static String com_kash_presentation_insights_InsightsViewModel = "com.kash.presentation.insights.InsightsViewModel";
 
-      @KeepFieldType
-      HistoryViewModel com_kash_presentation_history_HistoryViewModel2;
+      static String com_kash_presentation_history_HistoryViewModel = "com.kash.presentation.history.HistoryViewModel";
 
-      @KeepFieldType
-      LossViewModel com_kash_presentation_loss_LossViewModel2;
+      static String com_kash_presentation_auth_LoginViewModel = "com.kash.presentation.auth.LoginViewModel";
 
-      @KeepFieldType
-      AppViewModel com_kash_presentation_AppViewModel2;
+      static String com_kash_presentation_product_ProductViewModel = "com.kash.presentation.product.ProductViewModel";
 
-      @KeepFieldType
-      TransactionViewModel com_kash_presentation_transaction_TransactionViewModel2;
-
-      @KeepFieldType
-      ProductViewModel com_kash_presentation_product_ProductViewModel2;
+      static String com_kash_presentation_transaction_TransactionViewModel = "com.kash.presentation.transaction.TransactionViewModel";
 
       @KeepFieldType
       DashboardViewModel com_kash_presentation_dashboard_DashboardViewModel2;
 
       @KeepFieldType
-      LoginViewModel com_kash_presentation_auth_LoginViewModel2;
+      AppViewModel com_kash_presentation_AppViewModel2;
+
+      @KeepFieldType
+      LossViewModel com_kash_presentation_loss_LossViewModel2;
 
       @KeepFieldType
       InsightsViewModel com_kash_presentation_insights_InsightsViewModel2;
+
+      @KeepFieldType
+      HistoryViewModel com_kash_presentation_history_HistoryViewModel2;
+
+      @KeepFieldType
+      LoginViewModel com_kash_presentation_auth_LoginViewModel2;
+
+      @KeepFieldType
+      ProductViewModel com_kash_presentation_product_ProductViewModel2;
+
+      @KeepFieldType
+      TransactionViewModel com_kash_presentation_transaction_TransactionViewModel2;
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {
