@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kash</string>
+    <string name="google_web_client_id">149899505643-tt8fuqt5okl9tf7c1hu9p0tt1am324ib.apps.googleusercontent.com</string>
+    <style name="Theme.Kash" parent="android:Theme.Material.Light.NoActionBar"/>
+</resources>

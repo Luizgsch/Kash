@@ -99,7 +99,7 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
       type: tx.type,
       description: tx.description,
       categoryId: tx.categoryId,
-      categoryName: tx.category.name,
+      categoryName: tx.category?.name ?? "Mobile",
       walletId: tx.walletId,
       walletName: tx.wallet.name,
       createdAt: tx.createdAt.toISOString(),

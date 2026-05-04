@@ -16,7 +16,7 @@ export type TransactionRowDTO = {
   amount: number;
   type: TransactionType;
   description: string | null;
-  categoryId: string;
+  categoryId: string | null;
   categoryName: string;
   walletId: string;
   walletName: string;

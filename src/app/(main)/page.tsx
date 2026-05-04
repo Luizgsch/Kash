@@ -15,7 +15,7 @@ import { formatCurrency } from "@/lib/utils";
 type RecentTx = {
   id: string;
   description: string | null;
-  category: { name: string };
+  category: { name: string } | null;
   amount: number;
   type: TransactionType;
   createdAt: Date;
@@ -150,8 +150,8 @@ export default async function Home() {
         ) : (
           <div className="space-y-3">
             {recent.map((tx) => {
-              const catName = tx.category.name.trim() || "Sem categoria";
-              const emoji = categoryEmoji(tx.category.name);
+              const catName = tx.category?.name.trim() || "Sem categoria";
+              const emoji = categoryEmoji(tx.category?.name ?? "");
               const kind = tx.type === "INFLOW" ? "Entrada" : "Saída";
               return (
               <div

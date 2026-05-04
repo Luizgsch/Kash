@@ -15,7 +15,7 @@ export type EditableTransaction = {
   amount: number;
   type: TransactionType;
   description: string | null;
-  categoryId: string;
+  categoryId: string | null;
   walletId: string;
   createdAt: string;
 };
@@ -54,7 +54,7 @@ export function TransactionEditDrawer({
     if (!open || !transaction) return;
     setDigits(String(transaction.amount));
     setDescription(transaction.description ?? "");
-    setCategoryId(transaction.categoryId);
+    setCategoryId(transaction.categoryId ?? "");
     setTxType(transaction.type);
     setCreatedLocal(toDatetimeLocalValue(transaction.createdAt));
     setError(null);

@@ -52,6 +52,8 @@ model Organization {
   transactions Transaction[]
   users        User[]
   wallets      Wallet[]
+  products     Product[]
+  losses       Loss[]
 }
 
 model Wallet {
@@ -62,6 +64,7 @@ model Wallet {
   updatedAt      DateTime      @updatedAt
   categories     Category[]
   transactions   Transaction[]
+  products       Product[]
   organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId])
@@ -108,12 +111,13 @@ model Transaction {
   organizationId String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
-  categoryId     String
+  categoryId     String?
   walletId       String
-  category       Category        @relation(fields: [categoryId], references: [id])
+  category       Category?       @relation(fields: [categoryId], references: [id])
   organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   wallet         Wallet          @relation(fields: [walletId], references: [id])
+  sales          Sale[]
 
   @@index([organizationId])
   @@index([organizationId, createdAt])
@@ -126,4 +130,59 @@ model Transaction {
 enum TransactionType {
   INFLOW
   OUTFLOW
+}
+
+model Product {
+  id             String       @id
+  name           String
+  walletId       String
+  organizationId String
+  categoryId     String?
+  salePriceCents Int
+  costPriceCents Int
+  currentStock   Int          @default(0)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  wallet         Wallet       @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sales          Sale[]
+  losses         Loss[]
+
+  @@index([walletId])
+  @@index([organizationId])
+}
+
+model Sale {
+  id                 String      @id
+  productId          String
+  transactionId      String
+  quantity           Int
+  salePriceCentsEach Int
+  costPriceCentsEach Int
+  walletId           String
+  organizationId     String
+  createdAt          DateTime    @default(now())
+  product            Product     @relation(fields: [productId], references: [id], onDelete: Restrict)
+  transaction        Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([transactionId])
+  @@index([walletId])
+  @@index([organizationId])
+}
+
+model Loss {
+  id             String       @id
+  productId      String
+  quantity       Int
+  reason         String       @default("")
+  walletId       String
+  organizationId String
+  createdAt      DateTime     @default(now())
+  product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([walletId])
+  @@index([organizationId])
 }
