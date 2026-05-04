@@ -3,6 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  Stack,
+  InputAdornment,
+} from "@mui/material";
 import { Lock, Mail, User } from "lucide-react";
 
 import { signUp } from "@/app/actions/auth";
@@ -33,95 +42,86 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4 w-full">
-      <div className="space-y-2">
-        <label className="sr-only" htmlFor="reg-name">
-          Nome
-        </label>
-        <div className="relative">
-          <User
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-            size={18}
-            aria-hidden
-          />
-          <input
-            id="reg-name"
-            name="name"
-            type="text"
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Seu nome"
-            required
-            className="w-full pl-10 pr-3 py-3 rounded-xl border border-slate-700 bg-slate-900 text-slate-100 placeholder:text-slate-600"
-          />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <label className="sr-only" htmlFor="reg-email">
-          E-mail
-        </label>
-        <div className="relative">
-          <Mail
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-            size={18}
-            aria-hidden
-          />
-          <input
-            id="reg-email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="seu@email.com"
-            className="w-full pl-10 pr-3 py-3 rounded-xl border border-slate-700 bg-slate-900 text-slate-100 placeholder:text-slate-600"
-          />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <label className="sr-only" htmlFor="reg-password">
-          Senha
-        </label>
-        <div className="relative">
-          <Lock
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
-            size={18}
-            aria-hidden
-          />
-          <input
-            id="reg-password"
-            name="password"
-            type="password"
-            required
-            autoComplete="new-password"
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Senha (mín. 8 caracteres)"
-            className="w-full pl-10 pr-3 py-3 rounded-xl border border-slate-700 bg-slate-900 text-slate-100 placeholder:text-slate-600"
-          />
-        </div>
-      </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full py-3 px-4 rounded-xl bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400 disabled:opacity-60"
-      >
-        {pending ? "Criando conta…" : "Criar conta"}
-      </button>
-      {message ? (
-        <p className="text-sm text-amber-400 text-center" role="alert">
-          {message}
-        </p>
-      ) : null}
-      <p className="text-center text-sm text-slate-500">
-        Já tem conta?{" "}
-        <Link href="/login" className="text-emerald-500 hover:text-emerald-400">
-          Entrar
-        </Link>
-      </p>
-    </form>
+    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "sm", mx: "auto", width: "100%" }}>
+      <Stack spacing={2}>
+        <TextField
+          fullWidth
+          label="Nome"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Seu nome"
+          required
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <User size={18} />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+
+        <TextField
+          fullWidth
+          label="E-mail"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="seu@email.com"
+          required
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Mail size={18} />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+
+        <TextField
+          fullWidth
+          label="Senha (mín. 8 caracteres)"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock size={18} />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+
+        <Button
+          fullWidth
+          variant="contained"
+          size="large"
+          type="submit"
+          disabled={pending}
+          sx={{ bgcolor: "success.main" }}
+        >
+          {pending ? "Criando conta…" : "Criar conta"}
+        </Button>
+
+        {message && <Alert severity="warning">{message}</Alert>}
+
+        <Typography variant="body2" align="center" sx={{ color: "text.secondary" }}>
+          Já tem conta?{" "}
+          <Link href="/login" style={{ color: "inherit", textDecoration: "none" }}>
+            <Box component="span" sx={{ color: "primary.main", "&:hover": { textDecoration: "underline" } }}>
+              Entrar
+            </Box>
+          </Link>
+        </Typography>
+      </Stack>
+    </Box>
   );
 }
