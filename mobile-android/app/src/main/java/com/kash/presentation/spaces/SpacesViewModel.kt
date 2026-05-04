@@ -3,6 +3,8 @@ package com.kash.presentation.spaces
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kash.data.remote.api.KashApiService
+import com.kash.data.remote.dto.CategoryManageDto
+import com.kash.data.remote.dto.CreateCategoryRequest
 import com.kash.data.remote.dto.CreateWalletRequest
 import com.kash.data.remote.dto.RenameWalletRequest
 import com.kash.data.remote.dto.WalletDto
@@ -22,6 +24,8 @@ class SpacesViewModel @Inject constructor(
     data class State(
         val loading: Boolean = true,
         val wallets: List<WalletDto> = emptyList(),
+        val categories: Map<String, List<CategoryManageDto>> = emptyMap(),
+        val expandedWalletId: String? = null,
         val error: String? = null,
         val feedback: String? = null
     )
@@ -37,6 +41,40 @@ class SpacesViewModel @Inject constructor(
             runCatching { api.getWallets() }
                 .onSuccess { ws -> _state.update { it.copy(loading = false, wallets = ws) } }
                 .onFailure { e  -> _state.update { it.copy(loading = false, error = e.message) } }
+        }
+    }
+
+    fun toggleExpand(walletId: String) {
+        val current = _state.value.expandedWalletId
+        if (current == walletId) {
+            _state.update { it.copy(expandedWalletId = null) }
+        } else {
+            _state.update { it.copy(expandedWalletId = walletId) }
+            loadCategories(walletId)
+        }
+    }
+
+    private fun loadCategories(walletId: String) {
+        viewModelScope.launch {
+            runCatching { api.getCategories(walletId) }.onSuccess { cats ->
+                _state.update { it.copy(categories = it.categories + (walletId to cats)) }
+            }
+        }
+    }
+
+    fun createCategory(walletId: String, name: String) {
+        viewModelScope.launch {
+            runCatching { api.createCategory(CreateCategoryRequest(walletId, name)) }
+                .onSuccess { loadCategories(walletId) }
+                .onFailure { e -> _state.update { it.copy(feedback = e.message) } }
+        }
+    }
+
+    fun deleteCategory(walletId: String, categoryId: String) {
+        viewModelScope.launch {
+            runCatching { api.deleteCategory(categoryId) }
+                .onSuccess { loadCategories(walletId) }
+                .onFailure { e -> _state.update { it.copy(feedback = e.message) } }
         }
     }
 

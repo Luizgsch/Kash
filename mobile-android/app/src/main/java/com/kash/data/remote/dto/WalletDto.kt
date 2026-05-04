@@ -15,3 +15,5 @@ data class CategoryDto(
 
 data class CreateWalletRequest(val name: String)
 data class RenameWalletRequest(val name: String)
+data class CreateCategoryRequest(val walletId: String, val name: String)
+data class CategoryManageDto(val id: String, val name: String)

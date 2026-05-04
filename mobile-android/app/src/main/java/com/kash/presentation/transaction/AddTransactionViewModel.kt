@@ -49,7 +49,8 @@ class AddTransactionViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching { api.getWallets() }.onSuccess { wallets ->
                 val session = prefs.session.first()
-                val defaultId = session?.activeWalletId ?: wallets.firstOrNull()?.id ?: ""
+                val defaultId = session?.activeWalletId?.takeIf { it.isNotBlank() }
+                    ?: wallets.firstOrNull()?.id ?: ""
                 _state.update { it.copy(wallets = wallets, selectedWalletId = defaultId) }
             }
         }

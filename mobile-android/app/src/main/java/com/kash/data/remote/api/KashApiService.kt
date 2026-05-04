@@ -4,6 +4,8 @@ import com.kash.data.remote.dto.AuthDto.GoogleLoginRequest
 import com.kash.data.remote.dto.AuthDto.LoginRequest
 import com.kash.data.remote.dto.AuthDto.RegisterRequest
 import com.kash.data.remote.dto.AuthDto.LoginResponse
+import com.kash.data.remote.dto.CategoryManageDto
+import com.kash.data.remote.dto.CreateCategoryRequest
 import com.kash.data.remote.dto.CreateWalletRequest
 import com.kash.data.remote.dto.ProfileDto
 import com.kash.data.remote.dto.RenameWalletRequest
@@ -38,6 +40,16 @@ interface KashApiService {
 
     @DELETE("mobile/wallets/{id}")
     suspend fun deleteWallet(@Path("id") id: String)
+
+    // Categories
+    @GET("mobile/categories")
+    suspend fun getCategories(@Query("walletId") walletId: String): List<CategoryManageDto>
+
+    @POST("mobile/categories")
+    suspend fun createCategory(@Body req: CreateCategoryRequest): CategoryManageDto
+
+    @DELETE("mobile/categories/{id}")
+    suspend fun deleteCategory(@Path("id") id: String)
 
     // Profile
     @GET("mobile/profile")

@@ -169,6 +169,7 @@ private fun AmountField(digits: String, onDigits: (String) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WalletSelector(wallets: List<com.kash.data.remote.dto.WalletDto>, selectedId: String, onSelect: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }

@@ -2,8 +2,10 @@ package com.kash.presentation.dashboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kash.data.remote.dto.TransactionResponseDto
+import com.kash.data.remote.dto.WalletDto
 import com.kash.presentation.theme.KashColors
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -50,6 +53,16 @@ fun DashboardScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = KashColors.OnSurfaceMuted
             )
+        }
+
+        if (state.wallets.size > 1) {
+            item {
+                WalletFilterBar(
+                    wallets    = state.wallets,
+                    selectedId = state.selectedWalletId,
+                    onSelect   = viewModel::selectWallet
+                )
+            }
         }
 
         item { BalanceCard(cents = state.balanceCents, loading = state.loading) }
@@ -185,7 +198,7 @@ private fun TransactionRow(tx: TransactionResponseDto) {
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text     = tx.description.ifBlank { tx.categoryName },
+                    text     = (tx.description ?: "").ifBlank { tx.categoryName },
                     style    = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                     color    = KashColors.OnSurface,
                     maxLines = 1
@@ -203,6 +216,48 @@ private fun TransactionRow(tx: TransactionResponseDto) {
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
             color = if (isInflow) KashColors.ProfitGreen else KashColors.LossRed
         )
+    }
+}
+
+@Composable
+private fun WalletFilterBar(wallets: List<WalletDto>, selectedId: String?, onSelect: (String?) -> Unit) {
+    Row(
+        modifier            = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        FilterChip(
+            selected = selectedId == null,
+            onClick  = { onSelect(null) },
+            label    = { Text("Todos", style = MaterialTheme.typography.labelMedium) },
+            colors   = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = KashColors.Accent,
+                selectedLabelColor     = KashColors.Background,
+                containerColor         = KashColors.SurfaceVariant,
+                labelColor             = KashColors.OnSurfaceMuted
+            ),
+            border = FilterChipDefaults.filterChipBorder(
+                enabled = true, selected = selectedId == null,
+                borderColor = KashColors.Border, selectedBorderColor = KashColors.Accent
+            )
+        )
+        wallets.forEach { w ->
+            val sel = w.id == selectedId
+            FilterChip(
+                selected = sel,
+                onClick  = { onSelect(w.id) },
+                label    = { Text(w.name, style = MaterialTheme.typography.labelMedium) },
+                colors   = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = KashColors.Accent,
+                    selectedLabelColor     = KashColors.Background,
+                    containerColor         = KashColors.SurfaceVariant,
+                    labelColor             = KashColors.OnSurfaceMuted
+                ),
+                border = FilterChipDefaults.filterChipBorder(
+                    enabled = true, selected = sel,
+                    borderColor = KashColors.Border, selectedBorderColor = KashColors.Accent
+                )
+            )
+        }
     }
 }
 

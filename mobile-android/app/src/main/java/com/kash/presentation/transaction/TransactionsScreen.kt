@@ -145,7 +145,7 @@ private fun TxRow(tx: TransactionResponseDto) {
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text     = tx.description.ifBlank { tx.categoryName },
+                    text     = (tx.description ?: "").ifBlank { tx.categoryName },
                     style    = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                     color    = KashColors.OnSurface,
                     maxLines = 1
